@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/smitgor/Appointy/controllers"
 	"gopkg.in/mgo.v2"
 )
 
@@ -13,13 +14,13 @@ func homepage(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleRequests() {
-	http.HandleFunc("/", homepage)
 	uc := controllers.NewUserController(getSession())
-	http.hendle("/users", uc.CreateUser)
-	http.hendle("/users/:id", uc.GetUser)
-	http.hendle("/posts", uc.CreatePost)
-	http.hendle("/posts/:id", uc.GetPost)
-	http.hendle("/posts/users/:id", uc.GetListOfPost)
+	http.HandleFunc("/", homepage)
+	http.HandleFunc("/users", uc.CreateUser)
+	http.HandleFunc("/users/:id", uc.GetUser)
+	//http.HandleFunc("/posts", uc.CreatePost)
+	//http.HandleFunc("/posts/:id", uc.GetPost)
+	//http.HandleFunc("/posts/users/:id", uc.GetListOfPost)
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }
 
@@ -28,7 +29,7 @@ func main() {
 }
 
 func getSession() *mgo.Session {
-	s, err := mgo.Dial("mongodb://localhos:27017")
+	s, err := mgo.Dial("mongodb://localhost:27017")
 	if err != nil {
 		panic(err)
 	}
